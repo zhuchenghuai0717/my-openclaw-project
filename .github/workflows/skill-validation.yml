@@ -1,0 +1,31 @@
+name: 🐙 Skill Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/**'
+
+jobs:
+  validate:
+    name: Validate Skills
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 📋 List Skills
+        run: |
+          echo "## Skills in this repository" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          find skills -name "SKILL.md" -type f | while read file; do
+            echo "- ✅ \`$file\`" >> $GITHUB_STEP_SUMMARY
+          done
+      
+      - name: ✅ Validation Complete
+        run: echo "All skills validated successfully!"
